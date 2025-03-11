@@ -1,0 +1,1 @@
+I think it is 100% safe and perhaps the best crosshair
