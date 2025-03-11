@@ -1,16 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Security.Cryptography;
+﻿using System; 
+using System.Drawing; 
+using System.Windows.Forms; 
 
 namespace crosshair4pubg
 {
@@ -19,38 +9,51 @@ namespace crosshair4pubg
 
         public crosshair()
         {
-            InitializeComponent();            
-        }
+            InitializeComponent();
 
-        private void Form1_Paint(object sender, PaintEventArgs e)
-        {
-            int w = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width;
-            int h = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height;
+            w = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width;
+            h = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height;
 
+            int hh = h / 9;
 
-            int ratio = 4;
+            int ww = hh * 2 / ratio;
 
-            this.Height = h / 9;
+            bm = new Bitmap(ww, hh);
 
-            this.Width = 2 * h / 9 / ratio;
+            var g = Graphics.FromImage(bm);
 
-            this.Top = h / 2 - this.Height;
-            this.Left = w / 2 - this.Width / 2;
-
-            int half = this.Height / 8;
-
-            var g = this.CreateGraphics();
-
-            int[] s = new int[] { 8,6,4,3 };
+            int[] s = new int[] { 8, 6, 4, 3 };
+            for (int i = 0; i < s.Length; ++i)
+            {
+                s[i] = s[i] * hh;
+            }
 
             for (int i = 0; i < s.Length; ++i)
             {
-                g.DrawLine(Pens.Red, this.Width / 2 - s[i] * half / ratio, this.Height - s[i] * half, this.Width / 2 + s[i] * half / ratio, this.Height - s[i] * half);
+                g.DrawLine(pen, ww / 2 - s[i] / (ratio * half_ratio), hh - s[i] / half_ratio, ww / 2 + s[i] / (ratio * half_ratio), hh - s[i] / half_ratio);
             }
-            g.DrawLine(Pens.Red, this.Width / 2, this.Height, this.Width / 2 - s[0] * half / ratio, this.Height - s[0] * half);
-            g.DrawLine(Pens.Red, this.Width / 2 + 1, this.Height, this.Width / 2 + s[0] * half / ratio, this.Height - s[0] * half); 
-
+            g.DrawLine(pen, ww / 2, hh, ww / 2 - s[0] / (ratio * half_ratio), hh - s[0] / half_ratio);
+            g.DrawLine(pen, ww / 2 + 1, hh, ww / 2 + s[0] / (ratio * half_ratio), hh - s[0] / half_ratio);
+            g.Dispose();
         }
+        int w, h;
+        Bitmap bm;
+
+        Pen pen = Pens.Red;
+        const int ratio = 4;
+        const int half_ratio = 8;
+
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        { 
+            var tg = this.CreateGraphics();
+            this.Height = h / 9;
+            this.Width = 2 * this.Height / ratio;
+            this.Top = h / 2 - this.Height;
+            this.Left = w / 2 - this.Width / 2;
+            tg.DrawImage(bm, 0, 0, this.Width, this.Height);
+            tg.Dispose();
+        }
+         
         private void crosshair_FormClosed(object sender, FormClosedEventArgs e)
         {
             Environment.Exit(0);

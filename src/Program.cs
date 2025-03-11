@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System; 
 using System.Windows.Forms;
 
 namespace crosshair4pubg
@@ -16,6 +12,7 @@ namespace crosshair4pubg
         static void Main()
         {
             var main = new crosshair();
+            main.AutoScaleMode = AutoScaleMode.Dpi;
             main.AllowTransparency = true;
             main.StartPosition = FormStartPosition.Manual;
             Application.Run(main);
